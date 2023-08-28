@@ -1,0 +1,17 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TestApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/secondary</item>
+        <item name="colorPrimaryVariant">@color/tertiary</item>
+        <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
+
+    </style>
+
+    <style name="Theme.TestApp" parent="Base.Theme.TestApp" />
+
+    <style name="SplashTheme" parent="Base.Theme.TestApp">
+        <item name="postSplashScreenTheme">@style/Theme.TestApp</item>
+    </style>
+</resources>

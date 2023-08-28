@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AbhinavAppBarLayout" parent="Base.Theme.TestApp">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/primary</item>
+        <item name="elevation">6dp</item>
+        <item name="android:theme">@style/ThemeOverlay.Material3.Light</item>
+    </style>
+
+    <style name="AbhinavTabLayout" parent="Base.Theme.TestApp">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/primary</item>
+        <item name="tabSelectedTextColor">@color/text_color</item>
+        <item name="tabIndicatorColor">@color/text_color</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabTextColor">@color/grey</item>
+    </style>
+
+    <style name="ToolbarTextStyle">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:fontFamily">@font/righteous</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>
