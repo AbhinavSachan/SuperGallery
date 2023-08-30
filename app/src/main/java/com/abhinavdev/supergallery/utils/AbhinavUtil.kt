@@ -2,6 +2,7 @@ package com.abhinavdev.supergallery.utils
 
 import android.content.ContentUris
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -27,6 +28,7 @@ import android.view.inputmethod.InputMethodManager
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -55,6 +57,29 @@ object AbhinavUtil {
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
         val byteArray = outputStream.toByteArray()
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+    /**
+     * @return date formatted in "dd MMM yyy hh:mm a"
+     */
+    fun Long.formatDate():String{
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = this * 1000L
+        val format = SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault())
+        return format.format(calendar.time)
+    }
+
+    fun createShareSongFileIntent(uri: Uri?): Intent? {
+        return if (uri != null) {
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                type = "image/*"
+            }
+        } else {
+            null
+        }
     }
 
     fun hideKeyboard(context: Context, rootView: View) {

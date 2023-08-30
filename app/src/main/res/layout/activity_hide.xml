@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.HideActivity">
+    tools:context=".ui.screens.HideActivity">
 
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_layout"
         layout="@layout/custom_moving_toolbar_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbar_layout"
         android:clipToPadding="false"
         android:paddingBottom="80dp" />
 

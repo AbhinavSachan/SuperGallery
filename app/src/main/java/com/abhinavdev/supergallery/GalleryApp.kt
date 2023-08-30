@@ -7,4 +7,5 @@ class GalleryApp : Application() {
         super.onCreate()
 
     }
+
 }

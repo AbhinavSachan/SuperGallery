@@ -1,6 +1,8 @@
 package com.abhinavdev.supergallery.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
@@ -22,10 +24,18 @@ object ImageLoadingUtil {
         placeholderImage: Int,
         errorHolderImage: Int = placeholderImage,
         imageView: ImageView,
-        image_measure: Int = 512
+        overrideSize:Boolean = true,
+        imageMeasure: Int = 512
     ) {
-        Glide.with(imageView.context).load(uri).override(image_measure)
-            .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        if (overrideSize) {
+            Glide.with(imageView.context).load(uri).override(imageMeasure)
+                .skipMemoryCache(true)
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        } else {
+            Glide.with(imageView.context).load(uri)
+                .skipMemoryCache(true)
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        }
     }
 
     fun loadFromUri(
@@ -33,9 +43,9 @@ object ImageLoadingUtil {
         placeholderImage: Int,
         errorHolderImage: Int = placeholderImage,
         imageView: ImageView,
-        image_measure: Int = 512
+        imageMeasure: Int = 512
     ) {
-        Glide.with(imageView.context).load(uri).override(image_measure)
+        Glide.with(imageView.context).load(uri).override(imageMeasure)
             .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
     }
 
@@ -44,13 +54,12 @@ object ImageLoadingUtil {
         placeholderImage: Int,
         errorHolderImage: Int = placeholderImage,
         imageView: ImageView,
-        image_measure: Int = 512,
+        imageMeasure: Int = 512,
     ) {
-
         GlideApp.with(imageView.context).load(model)
-            .override(image_measure)
+            .override(imageMeasure)
+            .skipMemoryCache(true)
             .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
     }
 
@@ -59,7 +68,7 @@ object ImageLoadingUtil {
         model: ImageModel?,
         placeholderImage: Int = -1,
         errorHolderImage: Int = placeholderImage,
-        image_measure: Int = 512,
+        imageMeasure: Int = 512,
         loadListener: ImageLoadListener
     ) {
         val target = object : Target<Drawable> {
@@ -108,19 +117,78 @@ object ImageLoadingUtil {
             }
 
         }
-        GlideApp.with(context).load(model).override(image_measure)
+        GlideApp.with(context).load(model).override(imageMeasure)
             .placeholder(placeholderImage).error(errorHolderImage).into(target)
     }
 
     fun loadFromFile(
-        uri: File,
+        file: File,
         placeholderImage: Int,
         errorHolderImage: Int = placeholderImage,
         imageView: ImageView,
-        image_measure: Int = 512
+        overrideSize:Boolean = true,
+        imageMeasure: Int = 512
     ) {
-        Glide.with(imageView.context).load(uri).override(image_measure).centerCrop()
-            .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        if (overrideSize) {
+            Glide.with(imageView.context).load(file).override(imageMeasure)
+                .skipMemoryCache(true)
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        } else {
+            Glide.with(imageView.context).load(file)
+                .skipMemoryCache(true)
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        }
+
+    }
+    fun loadFromBitmap(
+        bitmap: Bitmap,
+        placeholderImage: Int,
+        errorHolderImage: Int = placeholderImage,
+        imageView: ImageView,
+        overrideSize:Boolean = true,
+        imageMeasure: Int = 512
+    ) {
+        if (overrideSize) {
+            Glide.with(imageView.context).load(bitmap).override(imageMeasure).centerCrop()
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        } else {
+            Glide.with(imageView.context).load(bitmap).centerCrop()
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        }
+    }
+    fun loadFromDrawable(
+        drawable: Drawable,
+        placeholderImage: Int,
+        errorHolderImage: Int = placeholderImage,
+        imageView: ImageView,
+        overrideSize:Boolean = true,
+        imageMeasure: Int = 512
+    ) {
+        if (overrideSize) {
+            Glide.with(imageView.context).load(drawable).override(imageMeasure).centerCrop()
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        } else {
+            Glide.with(imageView.context).load(drawable).centerCrop()
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+
+        }
+    }
+    fun loadFromBitmapDrawable(
+        bitmapDrawable: BitmapDrawable,
+        placeholderImage: Int,
+        errorHolderImage: Int = placeholderImage,
+        imageView: ImageView,
+        overrideSize:Boolean = true,
+        imageMeasure: Int = 512
+    ) {
+        if (overrideSize) {
+            Glide.with(imageView.context).load(bitmapDrawable).override(imageMeasure).centerCrop()
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+        } else {
+            Glide.with(imageView.context).load(bitmapDrawable).centerCrop()
+                .placeholder(placeholderImage).error(errorHolderImage).into(imageView)
+
+        }
     }
 
     fun loadFromRes(res: Int, imageView: ImageView, size: Int = 512) {

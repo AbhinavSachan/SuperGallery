@@ -1,17 +1,27 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.TestApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/secondary</item>
         <item name="colorPrimaryVariant">@color/tertiary</item>
         <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
 
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@android:transition/explode</item>
+        <item name="android:windowExitTransition">@android:transition/explode</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">@transition/image_change_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/image_change_transition</item>
     </style>
 
-    <style name="Theme.TestApp" parent="Base.Theme.TestApp" />
+    <style name="SuperGalleryTheme" parent="BaseTheme" />
 
-    <style name="SplashTheme" parent="Base.Theme.TestApp">
-        <item name="postSplashScreenTheme">@style/Theme.TestApp</item>
+    <style name="SplashTheme" parent="BaseTheme">
+        <item name="postSplashScreenTheme">@style/SuperGalleryTheme</item>
     </style>
 </resources>

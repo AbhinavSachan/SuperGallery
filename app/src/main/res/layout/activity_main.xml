@@ -5,10 +5,10 @@
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.screens.MainActivity">
 
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_layout"
         layout="@layout/custom_moving_toolbar_layout" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

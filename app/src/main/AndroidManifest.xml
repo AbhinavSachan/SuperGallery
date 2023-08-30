@@ -21,13 +21,16 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TestApp"
+        android:theme="@style/SuperGalleryTheme"
         tools:targetApi="33">
         <activity
-            android:name=".ui.activities.HideActivity"
+            android:name=".ui.screens.ImagePagerActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".ui.screens.HideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.screens.MainActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
