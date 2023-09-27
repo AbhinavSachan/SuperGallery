@@ -12,7 +12,7 @@ import com.abhinavdev.supergallery.R
 import com.abhinavdev.supergallery.ui.adapters.ImageAdapter
 import com.abhinavdev.supergallery.constants.ActivityNames
 import com.abhinavdev.supergallery.databinding.ActivityHideBinding
-import com.abhinavdev.supergallery.repositories.ImageRepository
+import com.abhinavdev.supergallery.repositories.implementations.ImgRepoImpl
 import com.abhinavdev.supergallery.utils.StorageUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.ref.WeakReference
@@ -23,7 +23,6 @@ class HideActivity : AppCompatActivity() {
     }
     private lateinit var storageUtil: StorageUtil
     private lateinit var recyclerView: RecyclerView
-    private var imageRepository: ImageRepository? = null
     private var adapter: ImageAdapter? = null
 
     // Create a new ActivityResultLauncher to handle the delete request result
@@ -49,7 +48,6 @@ class HideActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        imageRepository = ImageRepository(WeakReference(this))
 
 
         recyclerView = binding.rv

@@ -17,7 +17,7 @@ import kotlin.coroutines.coroutineContext
 
 object FileUtil {
 
-    fun getAppSpecificHiddenFolder(activity: WeakReference<Activity>): String? {
+    fun getAppSpecificHiddenFolder(activity: WeakReference<Context>): String? {
         val path = activity.get()?.getExternalFilesDir(null) ?: return null
         val finalPath = if (path.exists()) {
             "${path.absolutePath}/${FolderNames.HIDDEN_FOLDER}"
@@ -40,7 +40,7 @@ object FileUtil {
         }
     }
 
-    fun getAppSpecificImageFolder(activity: WeakReference<Activity>): String? {
+    fun getAppSpecificImageFolder(activity: WeakReference<Context>): String? {
         val path = activity.get()?.getExternalFilesDir(null) ?: return null
         val finalPath = if (path.exists()) {
             "${path.absolutePath}/${FolderNames.OPEN_FOLDER}"

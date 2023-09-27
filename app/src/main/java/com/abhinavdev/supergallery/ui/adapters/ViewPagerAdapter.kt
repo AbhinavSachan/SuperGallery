@@ -19,9 +19,9 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity, var imageList: List<I
 
     override fun createFragment(position: Int): Fragment {
         return if (isHidden) {
-            OpenImageFragment.newInstanceForHiddenFolder(imageList[position].data)
+            OpenImageFragment.newInstanceForHiddenFolder(imageList[position])
         } else {
-            OpenImageFragment.newNormalInstance(imageList[position].uri)
+            OpenImageFragment.newNormalInstance(imageList[position])
         }
     }
 }

@@ -1,22 +1,19 @@
 package com.abhinavdev.supergallery.ui.fragments
 
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.abhinavdev.supergallery.R
 import com.abhinavdev.supergallery.databinding.FragmentOpenImageBinding
+import com.abhinavdev.supergallery.models.ImageModel
 import com.abhinavdev.supergallery.utils.ImageLoadingUtil
 import java.io.File
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val URI_OF_IMAGE = "uri_of_image"
-private const val DATA_OF_IMAGE = "data_of_image"
-private const val IS_HIDDEN = "is_hidden"
+private const val IMAGE_MODEL = "image_model"
 
 /**
  * A simple [Fragment] subclass.
@@ -24,9 +21,35 @@ private const val IS_HIDDEN = "is_hidden"
  * create an instance of this fragment.
  */
 class OpenImageFragment : Fragment() {
-    private var uri: Uri = Uri.parse("")
-    private var data: String = ""
-    private var isHidden: Boolean = false
+    companion object {
+        var isFolderHidden: Boolean = false
+
+        /**
+         * @return A new instance of fragment OpenImageFragment.
+         */
+        @JvmStatic
+        fun newNormalInstance(imageModel: ImageModel?) =
+            OpenImageFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(IMAGE_MODEL, imageModel)
+                }
+                isFolderHidden = false
+            }
+
+        /**
+         * @return A new instance of fragment OpenImageFragment.
+         */
+        @JvmStatic
+        fun newInstanceForHiddenFolder(imageModel: ImageModel?) =
+            OpenImageFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(IMAGE_MODEL, imageModel)
+                }
+                isFolderHidden = true
+            }
+    }
+
+    private var imageModel:ImageModel? = null
     private var __fragmentOpenImageBinding: FragmentOpenImageBinding? = null
 
     // This property is only valid between onCreateView and
@@ -36,11 +59,10 @@ class OpenImageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            isHidden = it.getBoolean(IS_HIDDEN, false)
-            if (isHidden) {
-                data = it.getString(DATA_OF_IMAGE, "")
+            imageModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                 it.getSerializable(IMAGE_MODEL,ImageModel::class.java)
             }else{
-                uri = it.getString(URI_OF_IMAGE, "").toUri()
+                it.getSerializable(IMAGE_MODEL) as ImageModel
             }
         }
     }
@@ -55,42 +77,27 @@ class OpenImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isHidden){
-            ImageLoadingUtil.loadFromFile(File(data), placeholderImage = R.drawable.placeholder_image, imageView = binding.myZoomageView, overrideSize = false, imageMeasure = 2048)
-        }else{
-            ImageLoadingUtil.loadFromUri(uri, placeholderImage = R.drawable.placeholder_image, imageView = binding.myZoomageView, overrideSize = false, imageMeasure = 2048)
+        imageModel?.apply {
+            if (isFolderHidden) {
+                ImageLoadingUtil.loadFromFile(
+                    File(data),
+                    placeholderImage = R.drawable.placeholder_image,
+                    imageView = binding.myZoomageView,
+                    imageMeasure = height.coerceAtLeast(width)
+                )
+            } else {
+                ImageLoadingUtil.loadFromUri(
+                    uri,
+                    placeholderImage = R.drawable.placeholder_image,
+                    imageView = binding.myZoomageView,
+                    imageMeasure = height.coerceAtLeast(width)
+                )
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         __fragmentOpenImageBinding = null
-    }
-
-    companion object {
-        /**
-         * @param uri uri of image when its not hidden.
-         * @return A new instance of fragment OpenImageFragment.
-         */
-        @JvmStatic
-        fun newNormalInstance(uri: Uri?) =
-            OpenImageFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(IS_HIDDEN,false)
-                    putString(URI_OF_IMAGE, uri.toString())
-                }
-            }
-        /**
-         * @param data path of image only when file is hidden.
-         * @return A new instance of fragment OpenImageFragment.
-         */
-        @JvmStatic
-        fun newInstanceForHiddenFolder(data:String?) =
-            OpenImageFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(IS_HIDDEN,true)
-                    putString(DATA_OF_IMAGE, data)
-                }
-            }
     }
 }

@@ -81,9 +81,11 @@ class ImageAdapter(private val context: Context, private var list: MutableList<I
 
         }
 
-        private fun setImageViewHeight(height: Int, view: View) {
+        private fun setImageViewHeight(height: Int?, view: View) {
             val params = view.layoutParams
-            params.height = height
+            if (height != null) {
+                params.height = height
+            }
             view.layoutParams = params
         }
 

@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep all model classes and their methods
+-keep class com.abhinavdev.supergallery.models.** { *; }

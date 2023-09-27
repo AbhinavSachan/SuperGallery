@@ -8,18 +8,19 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.abhinavdev.supergallery.ApplicationGallery
 import com.abhinavdev.supergallery.R
-import com.abhinavdev.supergallery.ui.adapters.ImageAdapter
 import com.abhinavdev.supergallery.databinding.ActivityMainBinding
-import com.abhinavdev.supergallery.repositories.ImageRepository
+import com.abhinavdev.supergallery.interfaces.ImageLoaderCallback
+import com.abhinavdev.supergallery.models.ImageModel
+import com.abhinavdev.supergallery.ui.adapters.ImageAdapter
 import com.abhinavdev.supergallery.utils.ImageListUtil
 import com.abhinavdev.supergallery.utils.PermissionUtil
 import com.abhinavdev.supergallery.utils.StorageUtil
 import com.abhinavdev.supergallery.viewmodels.MainActVM
-import com.abhinavdev.supergallery.viewmodels.ViewModelFactory
 import java.lang.ref.WeakReference
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ImageLoaderCallback {
     companion object {
         private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             listOf(
@@ -39,10 +40,10 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private lateinit var storageUtil: StorageUtil
-    private lateinit var imageRepository: ImageRepository
     private lateinit var mainViewModel: MainActVM
 
     private var adapter: ImageAdapter? = null
+    private var isLoading: Boolean = false
 
     private val isPermitted: Boolean by lazy {
         PermissionUtil.arePermissionsNotRequired(this, permissions)
@@ -53,11 +54,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         storageUtil = StorageUtil(this)
-        imageRepository = ImageRepository(WeakReference(this))
         // Initialize ViewModel with repository
-        val factory =
-            ViewModelFactory { MainActVM(ImageRepository(WeakReference(this@MainActivity))) }
-        mainViewModel = ViewModelProvider(this, factory)[MainActVM::class.java]
+        mainViewModel = ViewModelProvider(this)[MainActVM::class.java]
 
         val toolbar: Toolbar = binding.toolbarLayout.toolbar
         setSupportActionBar(toolbar)
@@ -67,15 +65,15 @@ class MainActivity : AppCompatActivity() {
             scanForImage()
         }
         binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.swipeRefreshLayout.isRefreshing = false
-            scanForImage()
+            if (!isLoading) {
+                scanForImage()
+            }
         }
         setUpRecyclerView()
     }
 
     private fun scanForImage() {
-        ImageListUtil.imageList = imageRepository.fetchAllImages()
-        mainViewModel.setImageList(ImageListUtil.imageList)
+        ApplicationGallery.appModule.imageRepository.fetchAllImages(WeakReference(this), this)
     }
 
     private fun setUpRecyclerView() {
@@ -104,4 +102,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onLoading() {
+        isLoading = true
+        if (!binding.swipeRefreshLayout.isRefreshing) {
+            binding.swipeRefreshLayout.isRefreshing = true
+        }
+    }
+
+    override fun <T> onLoadFinished(imageList: MutableList<T>) {
+        isLoading = false
+        binding.swipeRefreshLayout.isRefreshing = false
+        ImageListUtil.imageList = imageList.filterIsInstance<ImageModel>()
+        mainViewModel.setImageList(imageList.filterIsInstance<ImageModel>())
+    }
 }

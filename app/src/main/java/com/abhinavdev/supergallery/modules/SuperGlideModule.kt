@@ -2,6 +2,7 @@ package com.abhinavdev.supergallery.modules
 
 import android.content.Context
 import com.abhinavdev.supergallery.models.ImageModel
+import com.abhinavdev.supergallery.modules.helpers.ImageLoader
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule

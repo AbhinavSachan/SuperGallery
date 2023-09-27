@@ -6,11 +6,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
-import com.abhinavdev.supergallery.interfaces.ImageLoadListener
+import com.abhinavdev.supergallery.interfaces.GlideImageLoadListener
 import com.abhinavdev.supergallery.models.ImageModel
 import com.abhinavdev.supergallery.modules.GlideApp
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
@@ -69,7 +68,7 @@ object ImageLoadingUtil {
         placeholderImage: Int = -1,
         errorHolderImage: Int = placeholderImage,
         imageMeasure: Int = 512,
-        loadListener: ImageLoadListener
+        loadListener: GlideImageLoadListener
     ) {
         val target = object : Target<Drawable> {
             override fun onStart() {

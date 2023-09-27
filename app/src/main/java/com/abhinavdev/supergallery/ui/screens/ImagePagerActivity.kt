@@ -3,17 +3,16 @@ package com.abhinavdev.supergallery.ui.screens
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.FileUtils
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.abhinavdev.supergallery.classes.SortName
 import com.abhinavdev.supergallery.classes.ZoomOutPageTransformer
 import com.abhinavdev.supergallery.databinding.ActivityImagePagerBinding
 import com.abhinavdev.supergallery.models.ImageModel
 import com.abhinavdev.supergallery.ui.adapters.ViewPagerAdapter
+import com.abhinavdev.supergallery.ui.fragments.OpenImageFragment
 import com.abhinavdev.supergallery.utils.AbhinavUtil
 import com.abhinavdev.supergallery.utils.AbhinavUtil.formatDate
 import com.abhinavdev.supergallery.utils.FileUtil
@@ -29,28 +28,18 @@ class ImagePagerActivity : AppCompatActivity() {
     private val binding by lazy { ActivityImagePagerBinding.inflate(layoutInflater) }
     private var currentPosition = -1
     private var imageList: List<ImageModel> = emptyList()
-    private val intentLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
-        if (result.resultCode == RESULT_OK) {
-            // Delete request was successful
+    private val intentLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+            if (result.resultCode == RESULT_OK) {
+                // Delete request was successful
 
+            }
         }
-    }
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageScrolled(
-            position: Int,
-            positionOffset: Float,
-            positionOffsetPixels: Int
-        ) {
-        }
-
         override fun onPageSelected(position: Int) {
             LogUtil.log(this@ImagePagerActivity, "image ${getCurrentImage()}")
             currentPosition = position
             binding.toolbar.title = getCurrentImage().dateAdded.formatDate()
-        }
-
-        override fun onPageScrollStateChanged(state: Int) {
-
         }
     }
 
@@ -76,16 +65,21 @@ class ImagePagerActivity : AppCompatActivity() {
         }
     }
 
-    private fun shareImage(uri: Uri?){
+    private fun shareImage(uri: Uri?) {
         val intent = AbhinavUtil.createShareSongFileIntent(uri)
         startActivity(Intent.createChooser(intent, "Share Via ..."))
     }
 
-    private fun deleteImage(imageModel: ImageModel){
-        FileUtil.deleteFromDevice(WeakReference(this), listOf(imageModel),intentLauncher,false)
+    private fun deleteImage(imageModel: ImageModel) {
+        FileUtil.deleteFromDevice(
+            WeakReference(this),
+            listOf(imageModel),
+            intentLauncher,
+            OpenImageFragment.isFolderHidden
+        )
     }
 
-    private fun rotateImage(imageModel: ImageModel){
+    private fun rotateImage(imageModel: ImageModel) {
 
     }
 

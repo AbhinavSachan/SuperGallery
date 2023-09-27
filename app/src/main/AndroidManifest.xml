@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission
@@ -12,9 +13,10 @@
         android:maxSdkVersion="29" />
 
     <application
-        android:name=".GalleryApp"
+        android:name=".ApplicationGallery"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:largeHeap="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

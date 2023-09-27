@@ -1,16 +1,11 @@
 package com.abhinavdev.supergallery.utils
 
 import android.app.Activity
-import android.app.RecoverableSecurityException
-import android.content.ContentResolver
-import android.os.Build
-import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import com.abhinavdev.supergallery.interfaces.CopyImageCallback
 import com.abhinavdev.supergallery.interfaces.MoveImageCallback
 import com.abhinavdev.supergallery.models.ImageModel
-import com.abhinavdev.supergallery.utils.FileUtil.deleteFromDevice
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -49,7 +44,12 @@ class ImageMover(val activity: WeakReference<Activity>) {
                     }
                 }
             }
-            deleteFromDevice(WeakReference(activity.get()),imageModels, intentSenderLauncher, isHidden)
+            FileUtil.deleteFromDevice(
+                WeakReference(activity.get()),
+                imageModels,
+                intentSenderLauncher,
+                isHidden
+            )
             callback.moveCompleted()
         }
     }

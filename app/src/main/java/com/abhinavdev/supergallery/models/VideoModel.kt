@@ -1,6 +1,7 @@
 package com.abhinavdev.supergallery.models
 
 import android.net.Uri
+import java.io.Serializable
 
 data class VideoModel(
     var id: Long = -1,
@@ -27,4 +28,4 @@ data class VideoModel(
     var width: Int = -1,
     var year: Int = -1,
     var uri: Uri? = null
-)
+):Serializable
