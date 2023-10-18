@@ -52,7 +52,7 @@ class ImageAdapter(private val context: Context, private var list: MutableList<I
         internal fun onBind(item: ImageModel,position: Int) {
             val height = storageUtil.getImageHeight()
 
-            if (height == -1 || height == 0) {
+            if (height == -1 || height == 0 || height == null) {
                 binding.root.getSizeOfView {
                     setImageViewHeight(it.width, binding.root)
                     storageUtil.saveImageHeight(it.width)
